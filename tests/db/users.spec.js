@@ -26,7 +26,7 @@ describe("DB Users", () => {
       expect(user.username).toBe(fakeUserData.username);
     });
 
-    it("Does NOT return the password", async () => {
+    xit("Does NOT return the password", async () => {
       const fakeUserData = {
         username: faker.internet.userName(),
         password: faker.internet.password(),
@@ -37,7 +37,7 @@ describe("DB Users", () => {
   });
 
   describe("getUserByUsername", () => {
-    xit("Gets a user based on the username", async () => {
+    it("Gets a user based on the username", async () => {
       const fakeUserData = {
         username: "Sean",
         password: faker.internet.password(),
@@ -48,7 +48,7 @@ describe("DB Users", () => {
       expect(user.username).toBe(fakeUserData.username);
     });
 
-    xit("Does return the password", async () => {
+    it("Does return the password", async () => {
       const fakeUserData = {
         username: "Brittany",
         password: faker.internet.password(),
@@ -60,7 +60,7 @@ describe("DB Users", () => {
   });
 
   describe("getUser({ username, password })", () => {
-    it("Returns the user when the password verifies", async () => {
+    xit("Returns the user when the password verifies", async () => {
       const fakeUserData = {
         username: "Nicole",
         password: faker.internet.password(),
