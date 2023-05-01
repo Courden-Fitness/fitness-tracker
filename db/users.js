@@ -20,11 +20,30 @@ async function createUser({ username, password }) {
 }
 
 async function getUser({ username, password }) {
+ try {
+   const { rows } = await client.query(`
+    SELECT username, password
+    FROM user;
+   `);
 
+   return rows;
+ } catch (error) {
+   throw error;
+ }
 }
 
 async function getUserById(userId) {
-
+ try {
+  const { rows: [ user ] } = await client.query(`
+   SELECT id, username
+   FROM users
+   WHERE id=${ userId }
+  `);
+  
+   return user;
+ } catch (error) {
+   throw error;
+ }
 }
 
 async function getUserByUsername(userName) {
