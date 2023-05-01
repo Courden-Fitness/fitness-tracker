@@ -41,13 +41,24 @@ async function getUserById(userId) {
   `);
   
    return user;
+
  } catch (error) {
    throw error;
  }
 }
 
 async function getUserByUsername(userName) {
+  try {
+    const { rows: [ user ]} = await client.query(`
+      SELECT * FROM users
+      WHERE username = $1
+    `, [ userName ]);
 
+      return user;
+
+  } catch (error) {
+    throw error;
+  }
 }
 
 module.exports = {
