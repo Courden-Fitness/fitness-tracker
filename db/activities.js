@@ -80,7 +80,7 @@ async function attachActivitiesToRoutines(routines) {
        routine.activites = activitiesToAdd;
      }
   
-    console.log('these are my routines: ---->', routines);
+    // console.log('these are my routines: ---->', routines);
      return await attachActivitiesToRoutines(routines);
    } catch (error) {
      throw error;
@@ -90,7 +90,7 @@ async function attachActivitiesToRoutines(routines) {
 async function updateActivity({ id, ...fields }) {
   try {
     const keys = Object.keys(fields);
-    console.log(keys);
+    // console.log(keys);
     const setString = keys.map((key, index) => `"${key}"=$${index + 1}`)
       .join(', ');
    
