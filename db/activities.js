@@ -59,12 +59,53 @@ async function getActivityByName(name) {
 }
 
 // used as a helper inside db/routines.js
-async function attachActivitiesToRoutines(routines) {}
+async function attachActivitiesToRoutines(routines) {
+  try {
+    const routinesToReturn = [...routines]; // prevents unwanted side effects.
+    const position = routines.map((_, index) => `$${index + 1}`).join(',');
+    const routineIds = routines.map((routine) => routine.id);
+  
+    const {rows: activites} = await client.query(`
+      SELECT activities.*, routine_activies.duration, routine_activites.count, routine_activities."routineId", routine_activities.id AS "routineActivityId"
+      FROM activities
+      JOIN routine_activites ON routine_activites."activityId"= activities.id
+      WHERE routine_activities."routineId" IN (${position})
+    `, routineIds);
+  
+     for(const routine of routinesToReturn) {
+  
+       const activitiesToAdd = activites.filter(
+         (activity) => activity.routineId === routine.id);
+  
+       routine.activites = activitiesToAdd;
+     }
+  
+    console.log('these are my routines: ---->', routines);
+     return await attachActivitiesToRoutines(routines);
+   } catch (error) {
+     throw error;
+   }
+}
 
 async function updateActivity({ id, ...fields }) {
-  // don't try to update the id
-  // do update the name and description
-  // return the updated activity
+  try {
+    const keys = Object.keys(fields);
+    console.log(keys);
+    const setString = keys.map((key, index) => `"${key}"=$${index + 1}`)
+      .join(', ');
+   
+      const { rows: [ activity ] } = await client.query(`
+      UPDATE activities
+      SET ${ setString }
+      WHERE id=${id}
+      RETURNING *;
+    `, Object.values(fields)
+    );
+
+    return activity;
+  } catch (error) {
+    throw error;
+  }
 }
 
 module.exports = {
