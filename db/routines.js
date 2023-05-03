@@ -26,37 +26,52 @@ async function getRoutineById(id) {}
 async function getRoutinesWithoutActivities() {}
 
 async function getAllRoutines() {
- try {
-  const { rows: routines } = await client.query(`
-   SELECT routines.*, user.username AS "creatorName
-   FROM routines
-   JOIN users ON routines."creatorId" = users.id
-  `);
-  /* const routinesToReturn = [...routines]; // prevents unwanted side effects.
-  const position = routines.map((_, index) => `$${index + 1}`).join(',');
-  const routineIds = routines.map((routine) => routine.id);
+ 
+  try {
+    const { rows: routines } = await client.query(
+      `
+       SELECT routines.*, users.username AS "creatorName"
+       FROM routines
+       JOIN users ON routines."creatorId" = users.id
+    `
+    );
 
-  const {rows: activites} = await client.query(`
-    SELECT activities.*, routine_activies.duration, routine_activites.count, routine_activities."routineId", routine_activities.id AS "routineActivityId"
-    FROM activities
-    JOIN routine_activites ON routine_activites."activityId"= activities.id
-    WHERE routine_activities."routineId" IN (${position})
-  `, routineIds);
+    // const routinesToReturn = [...routines]; // prevents unwanted side effects.
+    // // $1, $2, $3
+    // const position = routines.map((_, index) => `$${index + 1}`).join(', ');
+    // const routineIds = routines.map((routine) => routine.id);
 
-   for(const routine of routinesToReturn) {
+    // // get the activities, JOIN with routine_activities (so we can get a routineId)
+    // const { rows: activities } = await client.query(
+    //   `
+    // SELECT activities.*, routine_activities.duration, routine_activities.count, routine_activities."routineId", routine_activities.id AS "routineActivityId"
+    // FROM activities
+    // JOIN routine_activities ON routine_activities."activityId" = activities.id
+    // WHERE routine_activities."routineId" IN (${position})
+    // `,
+    //   routineIds
+    // );
 
-     const activitiesToAdd = activites.filter(
-       (activity) => activity.routineId === routine.id);
+    // // console.log('these are my activities: ----->', activities);
 
-     routine.activites = activitiesToAdd;
-   }
+    // // loop over each routine
+    // for (const routine of routinesToReturn) {
+    //   // if the routine.id matches the activtiy.routineId then add to routine.
+    //   const activitiesToAdd = activities.filter(
+    //     (activity) => activity.routineId === routine.id
+    //   );
 
-  console.log('these are my routines: ---->', routines); */
-   return await attachActivitiesToRoutines(routines);
- } catch (error) {
-   throw error;
- }
+    //   routine.activities = activitiesToAdd;
+    // }
+
+    // console.log('these are my routines: ----->', routines[3]);
+    // // console.log('these are my routines: ----->', routines[3].activities);
+    return await attachActivitiesToRoutines(routines);
+  } catch (error) {
+    throw error;
+  }
 }
+
 
 async function getAllPublicRoutines() {}
 
