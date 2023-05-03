@@ -65,16 +65,16 @@ async function attachActivitiesToRoutines(routines) {
     const position = routines.map((_, index) => `$${index + 1}`).join(',');
     const routineIds = routines.map((routine) => routine.id);
   
-    const {rows: activites} = await client.query(`
-      SELECT activities.*, routine_activies.duration, routine_activites.count, routine_activities."routineId", routine_activities.id AS "routineActivityId"
+    const {rows: activities} = await client.query(`
+      SELECT activities.*, routine_activities.duration, routine_activities.count, routine_activities."routineId", routine_activities.id AS "routineActivityId"
       FROM activities
-      JOIN routine_activites ON routine_activites."activityId"= activities.id
+      JOIN routine_activities ON routine_activities."activityId"= activities.id
       WHERE routine_activities."routineId" IN (${position})
     `, routineIds);
   
      for(const routine of routinesToReturn) {
   
-       const activitiesToAdd = activites.filter(
+       const activitiesToAdd = activities.filter(
          (activity) => activity.routineId === routine.id);
   
        routine.activites = activitiesToAdd;
