@@ -60,7 +60,6 @@ async function getActivityByName(name) {
 
 // used as a helper inside db/routines.js
 async function attachActivitiesToRoutines(routines) {
-  try {
     const routinesToReturn = [...routines]; // prevents unwanted side effects.
     const position = routines.map((_, index) => `$${index + 1}`).join(',');
     const routineIds = routines.map((routine) => routine.id);
@@ -77,15 +76,12 @@ async function attachActivitiesToRoutines(routines) {
        const activitiesToAdd = activities.filter(
          (activity) => activity.routineId === routine.id);
   
-       routine.activites = activitiesToAdd;
+       routine.activities = activitiesToAdd;
      }
   
     // console.log('these are my routines: ---->', routines);
-     return await attachActivitiesToRoutines(routines);
-   } catch (error) {
-     throw error;
-   }
-}
+     return routinesToReturn;
+    }
 
 async function updateActivity({ id, ...fields }) {
   try {
