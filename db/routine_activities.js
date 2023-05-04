@@ -42,13 +42,13 @@ async function getRoutineActivityById(id) {
 
 async function getRoutineActivitiesByRoutine({ id }) {
   try {
-    const { rows: routine_activities } = await client.query(`
+    const { rows: routine_activity } = await client.query(`
      SELECT * FROM routine_activities
      JOIN routines ON routine_activities."routineId"= routines.id
      WHERE "routineId" = ${id}
     `);
     
-    return routine_activities;
+    return routine_activity;
     
       
 } catch (error) {
@@ -56,11 +56,56 @@ async function getRoutineActivitiesByRoutine({ id }) {
 }
 }
 
-async function updateRoutineActivity({ id, ...fields }) {}
+async function updateRoutineActivity({ id, ...fields }) {
+  try {
+    const keys = Object.keys(fields);
+    // console.log(keys);
+    const setString = keys.map((key, index) => `"${key}"=$${index + 1}`)
+      .join(', ');
+   
+      const { rows: [ routine_activity ] } = await client.query(`
+      UPDATE routine_activities
+      SET ${ setString }
+      WHERE id=${id}
+      RETURNING *;
+    `, Object.values(fields)
+    );
 
-async function destroyRoutineActivity(id) {}
+      return routine_activity;
 
-async function canEditRoutineActivity(routineActivityId, userId) {}
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function destroyRoutineActivity(id) {
+  try {
+    const { rows: [ routine_activity ] } = await client.query(`
+    DELETE FROM routine_activities
+    WHERE id = ${id}
+    RETURNING *;
+    `);
+    
+      return routine_activity;
+
+      
+} catch (error) {
+    throw error;
+}
+}
+
+async function canEditRoutineActivity(routineActivityId, userId) {
+  try {
+      if (routineActivityId === userId) {
+        return true;
+      } else {
+        return false;
+      };
+
+  } catch (error) {
+      throw error;
+  } 
+}
 
 module.exports = {
   getRoutineActivityById,

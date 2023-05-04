@@ -24,7 +24,19 @@ async function createRoutine({ creatorId, isPublic, name, goal }) {
 
 async function getRoutineById(id) {}
 
-async function getRoutinesWithoutActivities() {}
+async function getRoutinesWithoutActivities() {
+  try {
+    const { rows: routine } = await client.query(`
+      SELECT * FROM routines
+    `);
+
+      return routine;
+
+  } catch (error) {
+      throw error;
+  }
+}
+
 
 async function getAllRoutines() {
  
@@ -167,13 +179,13 @@ async function destroyRoutine(id) {
       WHERE "routineId" = ${id}
       `);
 
-      const { rows: routines } = await client.query(`
+      const { rows: routine } = await client.query(`
       DELETE FROM routines
       WHERE id = ${id}
       RETURNING *;
       `);
 
-        return routines;
+        return routine;
 
   } catch (error) {
       throw error;
