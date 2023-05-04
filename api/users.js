@@ -65,7 +65,38 @@ usersRouter.post("/register", async (req, res, next) => {
 });
 
 // POST /api/users/login
+usersRouter.post('/login', async (req, res, next) => {
+    const {username, password} = req.body;
 
+    if(!username || !password){
+        next({
+           name: "Login Credentials Error",
+           message: "Missing username and/or password"
+        })
+    }
+
+  try {
+    const user = await getUserByUsername(username);
+    const hashedPassword = user.password;
+
+    if(user && hashedPassword == hashedPassword){
+      const token = jwt.sign({ id:user.id, username:username }, process.env.JWT_SECRET );
+      res.send({ message: "you're logged in!",
+                 token,
+                 user
+            });
+    }else {
+        next({
+            name: "Login Error",
+            message: "Username and password combination do not match."
+        })
+    }
+    
+  } catch (error) {
+    next(error);
+  }
+  
+});
 // GET /api/users/me
 
 // GET /api/users/:username/routines
