@@ -21,13 +21,13 @@ async function createActivity({ name, description }) {
 async function getAllActivities() {
   try {
     const { rows: activity } = await client.query(`
-      SELECT * FROM activities
+    SELECT * FROM activities
     `);
-
-      return activity;
-
+    
+    return activity;
+    
   } catch (error) {
-      throw error;
+    throw error;
   }
 }
 
