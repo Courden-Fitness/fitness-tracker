@@ -6,19 +6,47 @@ const {
     getActivityByName, 
     createActivity,
     getActivityById,
-    updateActivity
+    updateActivity,
+    getPublicRoutinesByActivity
     } = require('../db');
 
 const { 
     requireUser 
-    } = require("./utils");
+    } = require("./utils"); 
 
 const { 
     ActivityExistsError, ActivityNotFoundError 
     } = require('../errors');
 
 // GET /api/activities/:activityId/routines
+router.get('/:activityId/routines', async (req, res, next) => {
+    const { activityId } = req.params;
+    
+    const activity = await getActivityById(activityId);
 
+    if (!activity) {
+        next({
+            name: "Activity not found",
+            error: "Activity not found",
+            message: ActivityNotFoundError(activityId)
+            });
+    } else {
+        try {
+         const allPublicRoutines = await getPublicRoutinesByActivity({ id:activityId }) ;
+       
+         res.send(
+            allPublicRoutines
+           )
+       
+        } catch (error) {
+           next (error)
+        }
+       
+    }
+    
+ 
+
+})
 // GET /api/activities
 router.get('/', async (req, res, next) => {
     //const { name, description} = req.body;
