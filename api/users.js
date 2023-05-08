@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-catch */
 const express = require("express");
-const usersRouter = express.Router();
+const router = express.Router();
 
 const { requireUser } = require("./utils"); 
 
@@ -16,12 +16,13 @@ const {
 const { 
     getUserByUsername, 
     createUser, 
-    getPublicRoutinesByUser
+    getPublicRoutinesByUser,
+    getAllRoutinesByUser
     } = require("../db");
 
 
 // POST /api/users/register
-usersRouter.post("/register", async (req, res, next) => {
+router.post("/register", async (req, res, next) => {
     const { username, password } = req.body;
     
     try {
@@ -69,7 +70,7 @@ usersRouter.post("/register", async (req, res, next) => {
 });
 
 // POST /api/users/login
-usersRouter.post('/login', async (req, res, next) => {
+router.post('/login', async (req, res, next) => {
     const {username, password} = req.body;
 
     if(!username || !password){
@@ -103,31 +104,39 @@ usersRouter.post('/login', async (req, res, next) => {
 });
 // GET /api/users/me
 
+router.get('/me', requireUser, async (req, res, next) => {
+    try {
+        res.send(
+            req.user
+        );
+        
+    } catch (error) {
+        next(error);
+    }
+})
+
 // GET /api/users/:username/routines
-usersRouter.get('/:username/routines', requireUser, async (req, res, next) => {
+router.get('/:username/routines', requireUser, async (req, res, next) => {
     const { username } = req.params;
     
-    const user = await getUserByUsername(username);
-
-    if (!user) {
-        next({
-            name: "User Does Not Exist",
-            error: "User Does Not Exist",
-            message: UserDoesNotExistError(username)
-            });
-    } else {
         try {
-         const allPublicRoutines = await getPublicRoutinesByUser({ id:username }) ;
-       
-         res.send({
-             
-             allPublicRoutines
-         });
+            if (req.user.username === username) {
+                const routinesByUser = await getAllRoutinesByUser({username});
+                
+                res.send (
+                    routinesByUser
+                );
+            } else {
+                const allPublicRoutines = await getPublicRoutinesByUser({username});
+
+                res.send(
+                    allPublicRoutines
+                );
+            }
        
         } catch (error) {
            next (error)
-        }
-       
-    }
+        }   
 })
-module.exports = usersRouter;
+
+module.exports = router;
