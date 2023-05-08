@@ -95,7 +95,7 @@ router.post("/", requireUser, async (req, res, next) => {
 router.patch('/:activityId', requireUser, async (req, res, next) => {
     const { name, description } = req.body;
     const { activityId } = req.params;
-console.log("This is activityId:", req.params)
+
     try {
         const activity = await getActivityById(activityId);
 

@@ -2,17 +2,21 @@
 const express = require("express");
 const usersRouter = express.Router();
 
+const { requireUser } = require("./utils"); 
+
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env;
 
 const {
     UserTakenError,
-    PasswordTooShortError 
+    PasswordTooShortError, 
+    UserDoesNotExistError
     } = require("../errors");
 
 const { 
     getUserByUsername, 
-    createUser 
+    createUser, 
+    getPublicRoutinesByUser
     } = require("../db");
 
 
@@ -100,5 +104,30 @@ usersRouter.post('/login', async (req, res, next) => {
 // GET /api/users/me
 
 // GET /api/users/:username/routines
+usersRouter.get('/:username/routines', requireUser, async (req, res, next) => {
+    const { username } = req.params;
+    
+    const user = await getUserByUsername(username);
 
+    if (!user) {
+        next({
+            name: "User Does Not Exist",
+            error: "User Does Not Exist",
+            message: UserDoesNotExistError(username)
+            });
+    } else {
+        try {
+         const allPublicRoutines = await getPublicRoutinesByUser({ id:username }) ;
+       
+         res.send({
+             
+             allPublicRoutines
+         });
+       
+        } catch (error) {
+           next (error)
+        }
+       
+    }
+})
 module.exports = usersRouter;
