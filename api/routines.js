@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllPublicRoutines, createRoutine, getRoutineById, updateRoutine } = require('../db');
+const { getAllPublicRoutines, createRoutine, getRoutineById, updateRoutine, destroyRoutine } = require('../db');
 const { requireUser } = require('./utils');
 const router = express.Router();
 
@@ -40,19 +40,19 @@ router.post('/', requireUser, async (req, res, next) => {
 router.patch('/:routineId', requireUser, async (req, res, next) => {
   const { isPublic, name, goal} = req.body;
   const routineId = req.params.routineId;
-  console.log("This is routineId:", routineId);
+  // console.log("This is routineId:", routineId);
 
   try {
     const routine = await getRoutineById(routineId);
-    console.log("This is routine:", routine);
-    if ( routine.id === req.user.id) {
+    // console.log("This is routine:", routine);
+    if ( routine.creatorId === req.user.id) {
       const updatedRoutine = await updateRoutine({
         id: routineId,
         isPublic,
         name,
         goal
       });
-      console.log("This is updatedRoutine:", updatedRoutine)
+      
       res.send (
         updatedRoutine 
       )
@@ -70,7 +70,32 @@ router.patch('/:routineId', requireUser, async (req, res, next) => {
   }
 })
 // DELETE /api/routines/:routineId
-
+router.delete('/:routineId', requireUser, async (req, res, next) => {
+  const routineId = req.params.routineId;
+// console.log("This is routineId:", routineId);
+  try {
+    const routine = await getRoutineById(routineId);
+    // console.log("This is routine:", routine);
+    // console.log("This is requserID:", req.user.id)
+    
+      if (routine && routine.creatorId === req.user.id) {
+        await destroyRoutine(routineId);
+        res.send (
+          routine
+        )
+      } else {
+        res.status(403);
+        res.send({
+          error: 'UnauthorizedDeleteError',
+          message: `User ${req.user.username} is not allowed to delete ${routine.name}`,
+          name: 'UnauthorizedDeleteError'
+        });
+      }
+     
+  } catch (error) {
+    next(error)
+  }
+})
 // POST /api/routines/:routineId/activities
 
 module.exports = router;
