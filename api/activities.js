@@ -122,7 +122,7 @@ router.patch('/:activityId', requireUser, async (req, res, next) => {
                 )
             }
         }
-        console.log("This is updated activity:", updateActivity);
+        // console.log("This is updated activity:", updateActivity);
     } catch (error) {
         next(error)
     }  
