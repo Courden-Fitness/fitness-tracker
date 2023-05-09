@@ -16,6 +16,7 @@ async function addActivityToRoutine({
           count
         )
         VALUES ($1, $2, $3, $4)
+        ON CONFLICT ("routineId", "activityId") DO NOTHING
         RETURNING *;
       `, [ routineId, activityId, duration, count ]);
           
@@ -42,15 +43,14 @@ async function getRoutineActivityById(id) {
 
 async function getRoutineActivitiesByRoutine({ id }) {
   try {
-    const { rows: routine_activity } = await client.query(`
+    const { rows } = await client.query(`
      SELECT * FROM routine_activities
-     JOIN routines ON routine_activities."routineId"= routines.id
-     WHERE "routineId" = ${id}
-    `);
+     WHERE "routineId" = $1
+    `, [id]);
+    // console.log('This is routine_activity:', routine_activity)
     
-    return routine_activity;
+    return rows;
     
-      
 } catch (error) {
     throw error;
 }
@@ -95,16 +95,25 @@ async function destroyRoutineActivity(id) {
 }
 
 async function canEditRoutineActivity(routineActivityId, userId) {
-  try {
-      if (routineActivityId === userId) {
+// console.log("This is routineActivityId:", routineActivityId);
+// console.log("This is userId:", userId);
+
+try {
+  const { rows: [ activity ] } = await client.query(`
+    SELECT * FROM routine_activities
+    JOIN routines ON routine_activities."routineId" = routines.id
+    WHERE routine_activities.id = $1
+  `, [ routineActivityId ]);
+
+  // console.log("This is activity:", activity);
+      if (activity.creatorId === userId) {
         return true;
       } else {
         return false;
-      };
-
-  } catch (error) {
-      throw error;
-  } 
+      }
+} catch (error) {
+    throw error;
+}
 }
 
 module.exports = {

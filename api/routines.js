@@ -1,6 +1,17 @@
 const express = require('express');
-const { getAllPublicRoutines, createRoutine, getRoutineById, updateRoutine, destroyRoutine } = require('../db');
-const { requireUser } = require('./utils');
+const { 
+      getAllPublicRoutines, 
+      createRoutine, 
+      getRoutineById, 
+      updateRoutine, 
+      destroyRoutine, 
+      getRoutineActivitiesByRoutine,
+      addActivityToRoutine
+} = require('../db');
+const { 
+      requireUser 
+} = require('./utils');
+
 const router = express.Router();
 
 // GET /api/routines
@@ -77,7 +88,6 @@ router.delete('/:routineId', requireUser, async (req, res, next) => {
     const routine = await getRoutineById(routineId);
     // console.log("This is routine:", routine);
     // console.log("This is requserID:", req.user.id)
-    
       if (routine && routine.creatorId === req.user.id) {
         await destroyRoutine(routineId);
         res.send (
@@ -93,9 +103,10 @@ router.delete('/:routineId', requireUser, async (req, res, next) => {
       }
      
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
+
 // POST /api/routines/:routineId/activities
 
 module.exports = router;

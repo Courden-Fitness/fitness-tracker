@@ -79,7 +79,7 @@ router.post("/", requireUser, async (req, res, next) => {
                 name,
                 description
                     });
-                    console.log("This is activity:", activity)
+                    // console.log("This is activity:", activity)
 
             res.send(
                 activity
