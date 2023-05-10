@@ -1,5 +1,10 @@
-import React, {useState, useEffect} from "react";
-import { Home, 
+import React, { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
+
+import { getMe } from "../api/Auth";
+import { getAllPublicRoutines } from "../api";
+import { 
+    Home, 
     Activities, 
     Login,
     MyRoutine,
@@ -7,11 +12,13 @@ import { Home,
     Routine,
     Navbar
 } from "./index";
-import { Routes, Route } from "react-router-dom";
-import { getAllPublicRoutines } from "../api";
 
- const Main = () => {
- const [routines, setRoutines] = useState([])
+const Main = () => {
+   
+ const [routines, setRoutines] = useState([]);
+     const [token, setToken ] = useState(localStorage.token);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [user, setUser] = useState([]);
 
  useEffect(() => {
       const publicRoutines = async () => {
@@ -26,6 +33,15 @@ import { getAllPublicRoutines } from "../api";
     }
     publicRoutines();
     }, []);
+   
+ useEffect(() => {
+        const fetchUser = async () => {
+            const fetchedUser = await getMe(token);
+            setUser(fetchedUser);
+        }
+        fetchUser();
+    }, [ token ]);
+
 
 
     return (
@@ -33,15 +49,39 @@ import { getAllPublicRoutines } from "../api";
             {<Navbar />}
 
         <Routes>
-
-            <Route path="/" element= {<Home />}/>
-            <Route path="/Login" element= {<Login />}/>
-            <Route path="/Register" element= {<Register />}/>
-            <Route path="/Routine" element= {<Routine routines={routines} setRoutines={setRoutines}/>}/>
-            <Route path="/MyRoutine" element= {<MyRoutine  />}/>
-            <Route path="/Activities" element= {<Activities />}/>
-            
-
+      
+            <Route path="/" element= 
+            {<Home
+            />}/>
+            <Route path="/Login" element= 
+            {<Login
+            token={token}
+            setToken={setToken}
+            user={user}
+            setUser={setUser}
+            isLoggedIn={isLoggedIn}
+            setIsLoggedIn={setIsLoggedIn}
+            />}/>
+            <Route path="/Register" element= 
+            {<Register
+                token={token}
+                setToken={setToken}
+                user={user}
+                setUser={setUser}
+                isLoggedIn={isLoggedIn}
+                setIsLoggedIn={setIsLoggedIn}
+            />}/>
+            <Route path="/Routine" element= 
+            {<Routine
+             routines={routines}
+              setRoutines={setRoutines}
+            />}/>
+            <Route path="/MyRoutine" element= 
+            {<MyRoutine 
+            />}/>
+            <Route path="/Activities" element= 
+            {<Activities 
+            />}/>
 
         </Routes>
         </>

@@ -24,7 +24,7 @@ const {
 // POST /api/users/register
 router.post("/register", async (req, res, next) => {
     const { username, password } = req.body;
-    
+    console.log("This is username and password:",username, password);
     try {
         const takenUser = await getUserByUsername(username);
 
