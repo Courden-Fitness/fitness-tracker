@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
+import { getMe } from "../api/Auth";
+import { getAllPublicRoutines } from "../api";
 import { 
     Home, 
     Activities, 
@@ -10,16 +12,29 @@ import {
     Routine,
     Navbar
 } from "./index";
-import { getMe } from "../api/Auth";
-
 
 const Main = () => {
-
-    const [token, setToken ] = useState(localStorage.token);
+   
+ const [routines, setRoutines] = useState([]);
+     const [token, setToken ] = useState(localStorage.token);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState([]);
 
-    useEffect(() => {
+ useEffect(() => {
+      const publicRoutines = async () => {
+       try {
+        const routines  = await getAllPublicRoutines();
+        console.log(routines)
+        setRoutines(routines);  
+   
+       } catch (error) {
+          console.error(error); 
+       }
+    }
+    publicRoutines();
+    }, []);
+   
+ useEffect(() => {
         const fetchUser = async () => {
             const fetchedUser = await getMe(token);
             setUser(fetchedUser);
@@ -27,12 +42,14 @@ const Main = () => {
         fetchUser();
     }, [ token ]);
 
+
+
     return (
         <>
             {<Navbar />}
 
         <Routes>
-
+      
             <Route path="/" element= 
             {<Home
             />}/>
@@ -55,7 +72,9 @@ const Main = () => {
                 setIsLoggedIn={setIsLoggedIn}
             />}/>
             <Route path="/Routine" element= 
-            {<Routine 
+            {<Routine
+             routines={routines}
+              setRoutines={setRoutines}
             />}/>
             <Route path="/MyRoutine" element= 
             {<MyRoutine 
@@ -67,6 +86,6 @@ const Main = () => {
         </Routes>
         </>
     )
-}
 
+}
 export default Main;
