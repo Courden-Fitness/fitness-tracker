@@ -1,8 +1,20 @@
-const BASE = "http://localhost:3001/api";
+const BASE = "http://localhost:3000/api";
 
 
 
-"Testing , Testing , from origin Courtney"
+// Routines
 
-"This is Hayden's Merge!" 
+// GET All Public Routines
+
+export const getAllPublicRoutines = async () => {
+    try {
+     const response = await fetch(`${BASE}/routines`);
+
+     const result = await response.json()
+     console.log(result);
+     return result
+    } catch (error) {
+      console.error(error) 
+    }
+}
 
