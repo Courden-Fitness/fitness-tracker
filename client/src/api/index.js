@@ -1,4 +1,4 @@
-const BASE = "http://localhost:3000/api";
+const BASE = "http://localhost:8080/api";
 
 
 
@@ -11,7 +11,7 @@ export const getAllPublicRoutines = async () => {
      const response = await fetch(`${BASE}/routines`);
 
      const result = await response.json()
-     console.log(result);
+    //  console.log(result);
      return result
     } catch (error) {
       console.error(error) 
