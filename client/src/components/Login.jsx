@@ -19,6 +19,7 @@ const Login = ({ setUser, setToken, setIsLoggedIn }) => {
                setToken(data.token)
                setUser({username, token: data.token})
                setIsLoggedIn(true)
+               localStorage.setItem("token", data.token);
            }
            setUsername("");
            setPassword("");

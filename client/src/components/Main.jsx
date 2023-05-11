@@ -14,12 +14,12 @@ import {
 } from "./index";
 
 const Main = () => {
-   
- const [routines, setRoutines] = useState([]);
-     const [token, setToken ] = useState(localStorage.token);
+    const [routines, setRoutines] = useState([]);
+    const [token, setToken ] = useState(localStorage.getItem("token"));
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState([]);
     const [activities, setActivities] = useState([])
+
 
  useEffect(() => {
       const initialData = async () => {
@@ -37,26 +37,31 @@ const Main = () => {
     initialData();
     }, []);
    
- useEffect(() => {
-        const fetchUser = async () => {
-            const fetchedUser = await getMe(token);
-            setUser(fetchedUser);
-        }
-        fetchUser();
-    }, [ token ]);
 
+useEffect(() => {
+    const fetchUser = async () => {
+        const fetchedUser = await getMe(token);
+        setUser(fetchedUser);
+    }
 
+fetchUser();
+}, [ token ]);
 
-    return (
+return (
         <>
-            {<Navbar />}
+            {<Navbar 
+            setToken={setToken}
+            setUser={setUser}
+            isLoggedIn={isLoggedIn}
+            setIsLoggedIn={setIsLoggedIn}
+            />}
 
         <Routes>
       
-            <Route path="/" element= 
+        <Route path="/" element= 
             {<Home
             />}/>
-            <Route path="/Login" element= 
+        <Route path="/Login" element= 
             {<Login
             token={token}
             setToken={setToken}
@@ -65,7 +70,7 @@ const Main = () => {
             isLoggedIn={isLoggedIn}
             setIsLoggedIn={setIsLoggedIn}
             />}/>
-            <Route path="/Register" element= 
+        <Route path="/Register" element= 
             {<Register
                 token={token}
                 setToken={setToken}
@@ -74,21 +79,23 @@ const Main = () => {
                 isLoggedIn={isLoggedIn}
                 setIsLoggedIn={setIsLoggedIn}
             />}/>
-            <Route path="/Routine" element= 
+        <Route path="/Routine" element= 
             {<Routine
              routines={routines}
               setRoutines={setRoutines}
             />}/>
-            <Route path="/MyRoutine" element= 
+        <Route path="/MyRoutine" element= 
             {<MyRoutine 
             />}/>
+
             <Route path="/Activities" element= 
             {<Activities activities={activities} setActivities={setActivities}
+
             />}/>
 
         </Routes>
         </>
     )
-
 }
+
 export default Main;

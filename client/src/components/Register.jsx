@@ -18,6 +18,7 @@ const Register = ({ setUser, setToken, setIsLoggedIn }) => {
 
            if(data.token) {
                setToken(data.token);
+               localStorage.setItem("token", data.token)
                setUser({username, token: data.token})
                setIsLoggedIn(true)
            }
