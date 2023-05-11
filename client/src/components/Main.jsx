@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import { getMe } from "../api/Auth";
-import { getAllPublicRoutines } from "../api";
+import { getAllActivities, getAllPublicRoutines } from "../api";
 import { 
     Home, 
     Activities, 
@@ -18,22 +18,26 @@ const Main = () => {
     const [token, setToken ] = useState(localStorage.getItem("token"));
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState([]);
+    const [activities, setActivities] = useState([])
 
-useEffect(() => {
-    const publicRoutines = async () => {
+
+ useEffect(() => {
+      const initialData = async () => {
        try {
         const routines  = await getAllPublicRoutines();
-        // console.log(routines)
-        setRoutines(routines);  
+        const activities = await getAllActivities();
+        //console.log(routines)
+        setRoutines(routines);
+        setActivities(activities); 
    
        } catch (error) {
           console.error(error); 
        }
     }
-
-publicRoutines();
-}, []);
+    initialData();
+    }, []);
    
+
 useEffect(() => {
     const fetchUser = async () => {
         const fetchedUser = await getMe(token);
@@ -83,8 +87,10 @@ return (
         <Route path="/MyRoutine" element= 
             {<MyRoutine 
             />}/>
-        <Route path="/Activities" element= 
-            {<Activities 
+
+            <Route path="/Activities" element= 
+            {<Activities activities={activities} setActivities={setActivities}
+
             />}/>
 
         </Routes>
