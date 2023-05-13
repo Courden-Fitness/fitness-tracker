@@ -10,19 +10,21 @@ const Routine = ( {routines} ) => {
          return (
             <div id={routine.id}>
              <h1>{routine.name}</h1>
-             <p>{routine.goal}</p> 
-             <p>{routine.creatorName}</p>
+             <p>Goal: {routine.goal}</p> 
+             <p>Creator Name: {routine.creatorName}</p>
             
             {routine.activities.map((activity, index) => {
                 return (
                  <div key={index}>
-                   <p>{activity.name}</p>
-                   <p>{activity.duration}</p> 
-                   <p>{activity.count}</p>
-                   <p>{activity.description}</p>   
+                   <p>Activity: {activity.name}</p>
+                   <p>Duration: {activity.duration}</p> 
+                   <p>Count: {activity.count}</p>
+                   <p>Description: {activity.description}</p>   
                  </div>
                 );
             })}
+
+            
             </div>
          )
         })

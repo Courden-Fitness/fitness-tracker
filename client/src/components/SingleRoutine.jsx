@@ -1,0 +1,54 @@
+import React from "react";
+import { deleteRoutine } from "../api";
+import { useNavigate } from "react-router-dom";
+
+const SingleRoutine = ( { selectedRoutine, setMyRoutines, myRoutines, token} ) => {
+
+    const navigate = useNavigate();
+  
+    const handleDelete = async () => {
+        await deleteRoutine(selectedRoutine.id, token);
+        setMyRoutines([...myRoutines.filter((myRoutine) => myRoutine.id !== selectedRoutine.id)]);
+        navigate('/MyRoutine');
+      }
+
+    return (
+        <>
+        <h1>Would you like to edit this routine ?</h1>
+   
+       
+            <div id={selectedRoutine.id}>
+             <h1>{selectedRoutine.name}</h1>
+             <p>Goal: {selectedRoutine.goal}</p> 
+             <p>Creator Name: {selectedRoutine.creatorName}</p>
+            
+            {selectedRoutine.activities.map((activity, index) => {
+                return (
+                 <div key={index}>
+                   <p>Activity: {activity.name}</p>
+                   <p>Duration: {activity.duration}</p> 
+                   <p>Count: {activity.count}</p>
+                   <p>Description: {activity.description}</p>   
+                 </div>
+                );
+            })}
+            
+            <button onClick={() => {
+                  handleDelete(selectedRoutine.id)
+                }}>Delete Routine</button>
+            
+            <button onClick={() => {
+             navigate('/UpdateRoutine')
+            }}>Update</button>
+            <button>Add Activity</button>
+            </div>
+         
+     
+     
+    
+     </>
+    );
+};
+
+
+export default SingleRoutine;
