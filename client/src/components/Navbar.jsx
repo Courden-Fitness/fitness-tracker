@@ -11,6 +11,7 @@ const Navbar = ({setUser, isLoggedIn, setIsLoggedIn, setToken}) => {
                    <div>
                    <NavLink to="/" className={"navlinks"}>Home</NavLink>
                    <NavLink to="/Routine" className={"navlinks"}>Routines</NavLink>
+                   <NavLink to="/MyRoutine" className={"navlinks"}>My Routines</NavLink>
                    {/* <NavLink to="/createpost" className={"navlinks"}>Create</NavLink> */}
                    <NavLink to="/" className={"navlinks"} onClick={() => {
                     setIsLoggedIn(false)
