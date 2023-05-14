@@ -117,6 +117,24 @@ export const getAllActivities = async () => {
   }
 }
 
+
+export const createActivity = async (token, newActivity) => {
+  console.log("This is newactivity:", newActivity)
+  try {
+    const response = await fetch(`${BASE}/activities`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(newActivity),
+    });
+
+    const result = await response.json();
+    console.log("This is result:", result);
+    return result;
+
+
 //ROUTINE ACTIVITIES
 
 //Update an activity on a routine
@@ -151,6 +169,7 @@ export const deleteActivity = async (token, routineActivityId ) => {
     
     const result = await response.json();
     return result
+    
   } catch (error) {
     console.error(error);
   }

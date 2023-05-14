@@ -11,6 +11,7 @@ import {
     Register,
     Routine,
     Navbar,
+    CreateActivity,
     CreateRoutine,
     UpdateRoutine,
     SingleRoutine
@@ -99,6 +100,21 @@ return (
               user={user}
               setSelectedRoutine={setSelectedRoutine}
             />}/>
+
+        <Route path="/Activities" element= 
+            {<Activities 
+                activities={activities} 
+                setActivities={setActivities}
+                isLoggedIn={isLoggedIn}
+                setIsLoggedIn={setIsLoggedIn}
+            />}/>
+        <Route path="/CreateActivity" element= 
+            {<CreateActivity 
+                activities={activities} 
+                setActivities={setActivities} 
+                token={token}
+                isLoggedIn={isLoggedIn}
+
         <Route path="/CreateRoutine" element= 
             {<CreateRoutine 
               token={token}
@@ -125,10 +141,11 @@ return (
               setRoutines={setRoutines}
               />}/>
 
-            <Route path="/Activities" element= 
+         <Route path="/Activities" element= 
             {<Activities 
               activities={activities} 
               setActivities={setActivities}
+
 
             />}/>
 
