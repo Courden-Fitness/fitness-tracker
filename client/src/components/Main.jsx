@@ -14,7 +14,8 @@ import {
     CreateActivity,
     CreateRoutine,
     UpdateRoutine,
-    SingleRoutine
+    SingleRoutine,
+    AddActivity
 } from "./index";
 
 const Main = () => {
@@ -115,6 +116,17 @@ return (
                 token={token}
                 isLoggedIn={isLoggedIn}
                 />}/>
+
+      <Route path="/AddActivity" element= 
+            {<AddActivity 
+                activities={activities} 
+                setActivities={setActivities} 
+                token={token}
+                isLoggedIn={isLoggedIn}
+                selectedRoutine={selectedRoutine}
+                user={user}
+                />}/>
+
         <Route path="/CreateRoutine" element= 
             {<CreateRoutine 
               token={token}

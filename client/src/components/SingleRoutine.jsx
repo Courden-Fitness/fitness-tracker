@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { deleteRoutine, getMyRoutines } from "../api";
 import { useNavigate } from "react-router-dom";
+import "./SingleRoutine.css";
 
 const SingleRoutine = ( { selectedRoutine, token, user} ) => {
   const [myRoutines, setMyRoutines] = useState([]);
@@ -36,7 +37,7 @@ const SingleRoutine = ( { selectedRoutine, token, user} ) => {
         <h1>Would you like to edit this routine ?</h1>
    
        
-            <div id={selectedRoutine.id}>
+            <div id={selectedRoutine.id} className="singleRoutine">
              <h1>{selectedRoutine.name}</h1>
              <p>Goal: {selectedRoutine.goal}</p> 
              <p>Creator Name: {selectedRoutine.creatorName}</p>
@@ -59,7 +60,9 @@ const SingleRoutine = ( { selectedRoutine, token, user} ) => {
             <button onClick={() => {
              navigate('/UpdateRoutine')
             }}>Update</button>
-            <button>Add Activity</button>
+            <button onClick={() => {
+             navigate('/AddActivity')
+            }}>Add Activity</button>
             </div>
          
      
