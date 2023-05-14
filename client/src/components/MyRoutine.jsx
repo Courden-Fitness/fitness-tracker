@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate} from "react-router-dom";
 import {  getMyRoutines } from "../api";
+import "./MyRoutine.css";
 
 const MyRoutine = ({ isLoggedIn, user, token, setSelectedRoutine}) => {
   const username = user.username;
@@ -25,14 +26,14 @@ fetchMyRoutines();
 
      return (
             <>
-            <h1>Welcome from My Routines!</h1>
+            
             <button onClick={() => {
                   navigate('/CreateRoutine');
                 }}>Create A New Routine</button>
            {isLoggedIn ? (
             myRoutines.map((routine) => {
              return (
-                <div id={routine.id}>
+                <div id={routine.id} className="routines">
                  <h1>{routine.name}</h1>
                  <p>Goal: {routine.goal}</p> 
                  <p>Creator Name: {routine.creatorName}</p>
@@ -57,11 +58,7 @@ fetchMyRoutines();
                   Details
                 </button>
 
-                {/* <button onClick={() => {
-                  navigate('/CreateRoutine');
-                }}>
-                  Create A New Routine
-                </button> */}
+                
 
                 
                 </div>

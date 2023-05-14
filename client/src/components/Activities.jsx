@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import "./Activities.css";
 
 const Activities = ({activities, isLoggedIn}) => {
   
@@ -11,16 +12,16 @@ const Activities = ({activities, isLoggedIn}) => {
     <>
     {isLoggedIn ? (
         <div>
-          <h1>Welcome from Activities!</h1>
+          
           <button onClick={() => {
             navigate("/CreateActivity")
           }}>Create Activity</button>
           {activities.map((activity) => {
             return (
               <>
-              <div key={activity.id}>
+              <div key={activity.id} className="activities">
                 <h1>{activity.name}</h1>
-//              <p>{activity.description}</p> 
+//              <p>Description: {activity.description}</p> 
               </div>
               </>
             )

@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import "./Navbar.css";
 
 const Navbar = ({setUser, isLoggedIn, setIsLoggedIn, setToken}) => {
 
@@ -13,7 +14,6 @@ const Navbar = ({setUser, isLoggedIn, setIsLoggedIn, setToken}) => {
                    <NavLink to="/Routine" className={"navlinks"}>Routines</NavLink>
 
                    <NavLink to="/Activities" className={"navlinks"}>Activities</NavLink>
-                   <NavLink to="/CreateActivity" className={"navlinks"}>Create Activity</NavLink>
 
                    <NavLink to="/MyRoutine" className={"navlinks"}>My Routines</NavLink>
 

@@ -4,11 +4,11 @@ const Routine = ( {routines} ) => {
   
     return (
         <>
-        <h1>Welcome from Routine!</h1>
+        
        {routines.length ? (
         routines.map((routine) => {
          return (
-            <div id={routine.id}>
+            <div id={routine.id} className="routines">
              <h1>{routine.name}</h1>
              <p>Goal: {routine.goal}</p> 
              <p>Creator Name: {routine.creatorName}</p>

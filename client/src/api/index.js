@@ -99,8 +99,23 @@ export const updateARoutine = async (token, updatedRoutine, routineId) => {
 }
 
 //Add an activity to a Routine
-export const addActivityToRoutine = async () => {
+export const addActivityToRoutine = async (token, addedActivityObj, routineId) => {
+  try {
+    const response = await fetch(`${BASE}/routines/${routineId}/activities`,{
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(addedActivityObj)
+    });
 
+    const result = await response.json();
+    console.log("Added Activity Results:", result)
+    return result
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 // Activities
