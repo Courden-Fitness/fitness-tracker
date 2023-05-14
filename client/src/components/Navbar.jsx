@@ -11,7 +11,8 @@ const Navbar = ({setUser, isLoggedIn, setIsLoggedIn, setToken}) => {
                    <div>
                    <NavLink to="/" className={"navlinks"}>Home</NavLink>
                    <NavLink to="/Routine" className={"navlinks"}>Routines</NavLink>
-                   {/* <NavLink to="/createpost" className={"navlinks"}>Create</NavLink> */}
+                   <NavLink to="/Activities" className={"navlinks"}>Activities</NavLink>
+                   <NavLink to="/CreateActivity" className={"navlinks"}>Create Activity</NavLink>
                    <NavLink to="/" className={"navlinks"} onClick={() => {
                     setIsLoggedIn(false)
                     setUser({})
@@ -26,8 +27,8 @@ const Navbar = ({setUser, isLoggedIn, setIsLoggedIn, setToken}) => {
                     <div>
                     <NavLink to="/" className={"navlinks"}>Home</NavLink>
                     <NavLink to="/Routine" className={"navlinks"}>Routines</NavLink>
-                    {/* <NavLink to="/createpost" className={"navlinks"}>Create</NavLink> */}
-                    <NavLink to="/login" className={"navlinks"}>Login</NavLink>
+                    <NavLink to="/Activities" className={"navlinks"}>Activities</NavLink>
+                    <NavLink to="/Login" className={"navlinks"}>Login</NavLink>
                     </div>
                 </nav>
         )}

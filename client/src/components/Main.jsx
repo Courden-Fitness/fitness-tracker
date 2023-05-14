@@ -10,7 +10,8 @@ import {
     MyRoutine,
     Register,
     Routine,
-    Navbar
+    Navbar,
+    CreateActivity
 } from "./index";
 
 const Main = () => {
@@ -87,9 +88,19 @@ return (
         <Route path="/MyRoutine" element= 
             {<MyRoutine 
             />}/>
-
-            <Route path="/Activities" element= 
-            {<Activities activities={activities} setActivities={setActivities}
+        <Route path="/Activities" element= 
+            {<Activities 
+                activities={activities} 
+                setActivities={setActivities}
+                isLoggedIn={isLoggedIn}
+                setIsLoggedIn={setIsLoggedIn}
+            />}/>
+        <Route path="/CreateActivity" element= 
+            {<CreateActivity 
+                activities={activities} 
+                setActivities={setActivities} 
+                token={token}
+                isLoggedIn={isLoggedIn}
 
             />}/>
 
