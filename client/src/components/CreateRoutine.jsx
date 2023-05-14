@@ -16,11 +16,9 @@ const createNewRoutine = ({token, routines, setRoutines}) => {
       };
    
       const data = await createRoutine(newRoutine, token);
-      console.log(data);
-      if (data.routines) {
-        setRoutines([data.routines, ...routines]);
+        setRoutines([data, ...routines]);
         navigate('/MyRoutine');
-      }
+      
     };
 
     return (

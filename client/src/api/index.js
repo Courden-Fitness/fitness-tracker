@@ -20,8 +20,9 @@ export const getAllPublicRoutines = async () => {
 }
 
 // GET all Registered Users routines
-export const getMyRoutines = async (username) => {
-  const token = localStorage.getItem("token")
+export const getMyRoutines = async (username, token) => {
+  console.log("This is Username:", username);
+  // const token = localStorage.getItem("token")
   try {
     const response = await fetch(`${BASE}/users/${username}/routines`, {
       method: "GET",
@@ -129,10 +130,16 @@ export const createActivity = async (token, newActivity) => {
       },
       body: JSON.stringify(newActivity),
     });
-
     const result = await response.json();
-    console.log("This is result:", result);
+    // console.log("This is result:", result);
     return result;
+
+  } catch(error) {
+      console.error(error);
+  }
+}
+    
+  
 
 
 //ROUTINE ACTIVITIES

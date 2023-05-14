@@ -8,7 +8,7 @@ export const getMe = async (token) => {
                 method: "GET",
                 headers: {
                     'Content-type': 'application/json',
-                    Authorization: `Bearer ${token}`
+                    'Authorization': `Bearer ${token}`
                 }
             });
         
