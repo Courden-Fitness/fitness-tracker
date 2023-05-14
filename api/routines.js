@@ -11,6 +11,9 @@ const {
 const { 
       requireUser 
 } = require('./utils');
+const { 
+  DuplicateRoutineActivityError
+  } = require('../errors');
 
 const router = express.Router();
 
@@ -108,5 +111,45 @@ router.delete('/:routineId', requireUser, async (req, res, next) => {
 });
 
 // POST /api/routines/:routineId/activities
+router.post('/:routineId/activities', requireUser, async (req, res, next) => {
+  const {routineId} = req.params
+  console.log("This is RoutineId:", routineId)
+  
+  const { activityId, duration, count } = req.body;
+  
 
+   try {
+     const routine_activity = await getRoutineActivitiesByRoutine({id:routineId } );
+     console.log("This is Routine_Activity:", routine_activity)
+   
+     if(routine_activity){
+       next({
+         name: "DuplicateRoutineActivityError",
+         error: "DuplicateRoutineActivityError",
+         message: DuplicateRoutineActivityError(routineId, activityId)
+         });
+  
+    } else {
+      const attachedActivity = await addActivityToRoutine({routineId, activityId, duration, count});
+      res.send(
+        attachedActivity
+        )
+        console.log("This is attachedActivity:", attachedActivity)
+    };
+  
+    } catch (error) {
+      next(error)
+   
+  }
+})
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 module.exports = router;
