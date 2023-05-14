@@ -13,7 +13,7 @@ export const getMe = async (token) => {
             });
         
         const result = await response.json();
-            // console.log("This is getME result:",result);
+             console.log("This is getME result:",result);
             return result;
 
     } catch (error) {

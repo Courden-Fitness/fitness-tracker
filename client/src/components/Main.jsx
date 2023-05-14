@@ -11,15 +11,21 @@ import {
     Register,
     Routine,
     Navbar,
-    CreateActivity
+    CreateActivity,
+    CreateRoutine,
+    UpdateRoutine,
+    SingleRoutine
 } from "./index";
 
 const Main = () => {
     const [routines, setRoutines] = useState([]);
     const [token, setToken ] = useState(localStorage.getItem("token"));
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [user, setUser] = useState([]);
-    const [activities, setActivities] = useState([])
+    const [user, setUser] = useState({});
+    const [activities, setActivities] = useState([]);
+    const [selectedRoutine, setSelectedRoutine] = useState([]);
+    
+    
 
 
  useEffect(() => {
@@ -27,9 +33,10 @@ const Main = () => {
        try {
         const routines  = await getAllPublicRoutines();
         const activities = await getAllActivities();
-        //console.log(routines)
+        
         setRoutines(routines);
-        setActivities(activities); 
+        setActivities(activities);
+        
    
        } catch (error) {
           console.error(error); 
@@ -46,7 +53,7 @@ useEffect(() => {
     }
 
 fetchUser();
-}, [ token ]);
+}, [ isLoggedIn ]);
 
 return (
         <>
@@ -83,11 +90,17 @@ return (
         <Route path="/Routine" element= 
             {<Routine
              routines={routines}
-              setRoutines={setRoutines}
+             setRoutines={setRoutines}
             />}/>
         <Route path="/MyRoutine" element= 
             {<MyRoutine 
+              isLoggedIn={isLoggedIn}
+              setIsLoggedIn={setIsLoggedIn}
+              token={token}
+              user={user}
+              setSelectedRoutine={setSelectedRoutine}
             />}/>
+
         <Route path="/Activities" element= 
             {<Activities 
                 activities={activities} 
@@ -101,6 +114,38 @@ return (
                 setActivities={setActivities} 
                 token={token}
                 isLoggedIn={isLoggedIn}
+
+        <Route path="/CreateRoutine" element= 
+            {<CreateRoutine 
+              token={token}
+              setToken={setToken}
+              routines={routines}
+              setRoutines={setRoutines}
+              />}/>
+
+         <Route path="/UpdateRoutine" element= 
+            {<UpdateRoutine 
+              token={token}
+              setToken={setToken}
+              routines={routines}
+              setRoutines={setRoutines}
+              setSelectedRoutine={setSelectedRoutine}
+              selectedRoutine={selectedRoutine}
+              />}/>
+
+         <Route path="/SingleRoutine" element= 
+            {<SingleRoutine 
+              selectedRoutine={selectedRoutine}
+              setSelectedRoutine={setSelectedRoutine}
+              routines={routines}
+              setRoutines={setRoutines}
+              />}/>
+
+         <Route path="/Activities" element= 
+            {<Activities 
+              activities={activities} 
+              setActivities={setActivities}
+
 
             />}/>
 
