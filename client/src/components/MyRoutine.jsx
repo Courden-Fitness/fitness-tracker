@@ -7,16 +7,16 @@ const MyRoutine = ({ isLoggedIn, user, token, setSelectedRoutine}) => {
   const navigate = useNavigate();
   console.log("username:", username)
 
-  
-  const [myRoutines, setMyRoutines ] = useState([]);
-
+  const [myRoutines, setMyRoutines] = useState([]);
   
    
   useEffect(() => {
     const fetchMyRoutines = async () => {
-        const allMyRoutines = await getMyRoutines(username);
-        console.log("My Routines:", allMyRoutines)
-        setMyRoutines(allMyRoutines);
+        const allMyRoutines = await getMyRoutines(username, token);
+        // console.log("My Routines:", allMyRoutines)
+        if (allMyRoutines.length){
+          setMyRoutines(allMyRoutines);
+        }    
     }
 
 fetchMyRoutines();
@@ -26,6 +26,9 @@ fetchMyRoutines();
      return (
             <>
             <h1>Welcome from My Routines!</h1>
+            <button onClick={() => {
+                  navigate('/CreateRoutine');
+                }}>Create A New Routine</button>
            {isLoggedIn ? (
             myRoutines.map((routine) => {
              return (
@@ -54,11 +57,11 @@ fetchMyRoutines();
                   Details
                 </button>
 
-                <button onClick={() => {
+                {/* <button onClick={() => {
                   navigate('/CreateRoutine');
                 }}>
                   Create A New Routine
-                </button>
+                </button> */}
 
                 
                 </div>

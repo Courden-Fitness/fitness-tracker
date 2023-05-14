@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { createActivity } from "../api";
+import { useNavigate } from "react-router-dom";
 
 const CreateActivity = ({ token, activities, setActivities, isLoggedIn }) => {
     const [ name, setName ] = useState("");
     const [ description, setDescription ] = useState("");
+
+    const navigate = useNavigate();
 
 
     const handleSubmit = async (event) => {
@@ -20,6 +23,7 @@ const CreateActivity = ({ token, activities, setActivities, isLoggedIn }) => {
 
         setName("")
         setDescription("")
+        navigate("/Activities")
     }
  
     

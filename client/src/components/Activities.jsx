@@ -1,6 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Activities = ({activities, isLoggedIn}) => {
+  
+  const navigate = useNavigate();
 
 
 
@@ -9,7 +12,9 @@ const Activities = ({activities, isLoggedIn}) => {
     {isLoggedIn ? (
         <div>
           <h1>Welcome from Activities!</h1>
-          <button type="submit"><a href="/CreateActivity">Create Activity</a></button>
+          <button onClick={() => {
+            navigate("/CreateActivity")
+          }}>Create Activity</button>
           {activities.map((activity) => {
             return (
               <>

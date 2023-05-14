@@ -16,12 +16,11 @@ const updateRoutine = ({token, routines, setRoutines, selectedRoutine}) => {
         };
      
         const data = await updateARoutine(token, updatedRoutine, selectedRoutine.id );
-        console.log(data);
-        if (data.routines) {
+        console.log(data); 
           setRoutines([data.routines, ...routines]);
           navigate('/MyRoutine');
           
-        }
+        
       };
 
     return (

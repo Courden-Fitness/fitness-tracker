@@ -114,7 +114,7 @@ return (
                 setActivities={setActivities} 
                 token={token}
                 isLoggedIn={isLoggedIn}
-
+                />}/>
         <Route path="/CreateRoutine" element= 
             {<CreateRoutine 
               token={token}
@@ -139,6 +139,8 @@ return (
               setSelectedRoutine={setSelectedRoutine}
               routines={routines}
               setRoutines={setRoutines}
+              user={user}
+              token={token}
               />}/>
 
          <Route path="/Activities" element= 
